@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 type Product = {
   id: number;
@@ -31,9 +32,11 @@ export default function ProductCard({
                   hover:shadow-2xl hover:-translate-y-1 flex flex-col items-center`}
     >
       <Link href={`/product/${product.id}`}>
-        <img
+        <Image
           src={product.image}
           alt={product.title}
+          width={280}
+          height={280}
           className="w-70 h-70 object-contain mb-3 transition-transform duration-300 hover:scale-105"
         />
       </Link>

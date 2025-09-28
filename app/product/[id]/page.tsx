@@ -2,12 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import ProductCard from "../../../components/ProductCard";
-// @ts-ignore
+import Image from "next/image";
+
+type Product = {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+};
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [error, setError] = useState<string>("");
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -25,15 +33,17 @@ export default function ProductDetail() {
     if (product) {
       const favs = localStorage.getItem("favorites");
       const favArr = favs ? JSON.parse(favs) : [];
-      setIsFavorite(favArr.some((item: any) => item.id === product.id));
+      setIsFavorite(favArr.some((item: Product) => item.id === product.id));
     }
   }, [product]);
 
   const toggleFavorite = () => {
+    if (!product) return;
+    
     const favs = localStorage.getItem("favorites");
     let favArr = favs ? JSON.parse(favs) : [];
     if (isFavorite) {
-      favArr = favArr.filter((item: any) => item.id !== product.id);
+      favArr = favArr.filter((item: Product) => item.id !== product.id);
     } else {
       favArr.push(product);
     }
@@ -50,9 +60,11 @@ export default function ProductDetail() {
   return (
     <div className="min-h-screen w-screen flex flex-col justify-center items-center bg-gradient-to-b from-gray-100 via-gray-50 to-gray-100">
       <div className="max-w-lg mx-auto p-6 bg-white rounded-2xl shadow-lg flex flex-col items-center">
-        <img
+        <Image
           src={product.image}
           alt={product.title}
+          width={384}
+          height={384}
           className="w-full max-h-96 object-contain mb-6 rounded-lg transition-transform duration-300 hover:scale-105"
         />
 

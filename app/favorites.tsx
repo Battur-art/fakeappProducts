@@ -1,9 +1,17 @@
 import ProductCard from "../components/ProductCard";
-// @ts-ignore
 import { useEffect, useState } from "react";
 
+type Product = {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+};
+
 export default function Favorites() {
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState<Product[]>([]);
 
   useEffect(() => {
     const favs = localStorage.getItem("favorites");
@@ -11,7 +19,7 @@ export default function Favorites() {
   }, []);
 
   const removeFavorite = (id: number) => {
-    const updated = favorites.filter((item: any) => item.id !== id);
+    const updated = favorites.filter((item: Product) => item.id !== id);
     setFavorites(updated);
     localStorage.setItem("favorites", JSON.stringify(updated));
   };
@@ -23,7 +31,7 @@ export default function Favorites() {
         {favorites.length === 0 ? (
           <p>No favorites yet.</p>
         ) : (
-          favorites.map((product: any) => (
+          favorites.map((product: Product) => (
             <ProductCard
               key={product.id}
               product={product}
